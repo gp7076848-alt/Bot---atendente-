@@ -1,0 +1,147 @@
+body{
+margin:0;
+background:#111;
+font-family:Arial,sans-serif;
+}
+
+.app{
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+.topo{
+background:#000;
+color:white;
+padding:15px;
+display:flex;
+align-items:center;
+}
+
+.logo{
+width:50px;
+height:50px;
+background:#FFD700;
+color:black;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+margin-right:10px;
+}
+
+.topo h2{
+margin:0;
+color:#FFD700;
+}
+
+.topo p{
+margin:0;
+font-size:13px;
+}
+
+#mensagens{
+height:65vh;
+padding:15px;
+overflow-y:auto;
+}
+
+.bot{
+
+background:#FFD700;
+padding:12px;
+border-radius:15px;
+margin-bottom:10px;
+max-width:80%;
+
+}
+
+.usuario{
+
+background:#2b2b2b;
+color:white;
+padding:12px;
+border-radius:15px;
+margin-left:auto;
+margin-bottom:10px;
+max-width:80%;
+
+}
+
+.barra{
+
+display:flex;
+padding:10px;
+background:#000;
+
+}
+
+input{
+
+flex:1;
+padding:12px;
+border:none;
+border-radius:25px;
+font-size:16px;
+
+}
+
+button{
+
+margin-left:10px;
+width:55px;
+border:none;
+border-radius:50%;
+background:#FFD700;
+font-size:20px;
+
+}.barra{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+padding:10px;
+background:#111;
+}
+
+#entrada{
+flex:1;
+padding:12px;
+font-size:16px;
+border-radius:25px;
+border:none;
+}
+
+button{
+margin-left:10px;
+padding:12px 20px;
+border:none;
+border-radius:25px;
+background:#FFD700;
+font-weight:bold;
+}
+/* BOTÕES DO WHATSAPP */
+.bot button {
+    display: block;
+    width: 90%;
+    max-width: 320px;
+    margin: 10px auto;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 15px;
+    background: #25D366;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.bot button:hover {
+    opacity: 0.9;
+}
+
+.bot button:active {
+    transform: scale(0.98);
+}
