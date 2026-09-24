@@ -1,0 +1,485 @@
+/* =========================================
+   GP DIGITAL
+   BOT ATENDENTE PROFISSIONAL
+========================================= */
+
+
+/* =========================================
+   CONFIGURAÇÃO DO WHATSAPP
+========================================= */
+
+const WHATSAPP = "SEU_NUMERO_AQUI";
+
+
+/* =========================================
+   ESTADO DO CLIENTE
+========================================= */
+
+let cliente = {
+  nome: "",
+  servico: "",
+  ideia: ""
+};
+
+
+/* =========================================
+   ELEMENTOS
+========================================= */
+
+const chat = document.getElementById("chat");
+const opcoes = document.getElementById("opcoes");
+const formulario = document.getElementById("formulario");
+const mensagem = document.getElementById("mensagem");
+const digitando = document.getElementById("digitando");
+
+
+/* =========================================
+   ADICIONAR MENSAGEM
+========================================= */
+
+function adicionarMensagem(texto, tipo = "bot") {
+
+  const div = document.createElement("div");
+
+  div.classList.add("mensagem");
+
+  if (tipo === "cliente") {
+    div.classList.add("cliente");
+  } else {
+    div.classList.add("bot");
+  }
+
+  div.textContent = texto;
+
+  chat.appendChild(div);
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+
+/* =========================================
+   EFEITO DIGITANDO
+========================================= */
+
+function esperar(callback, tempo = 600) {
+
+  digitando.classList.add("ativo");
+
+  setTimeout(() => {
+
+    digitando.classList.remove("ativo");
+
+    callback();
+
+  }, tempo);
+
+}
+
+
+/* =========================================
+   LIMPAR BOTÕES
+========================================= */
+
+function limparOpcoes() {
+
+  opcoes.innerHTML = "";
+
+}
+
+
+/* =========================================
+   CRIAR BOTÃO
+========================================= */
+
+function criarBotao(texto, acao, preco = "") {
+
+  const button = document.createElement("button");
+
+  button.className = "opcao";
+
+  button.innerHTML = `
+    ${texto}
+    ${preco ? `<span class="preco">${preco}</span>` : ""}
+  `;
+
+  button.onclick = acao;
+
+  opcoes.appendChild(button);
+
+}
+
+
+/* =========================================
+   INÍCIO
+========================================= */
+
+function iniciar() {
+
+  cliente = {
+    nome: "",
+    servico: "",
+    ideia: ""
+  };
+
+  chat.innerHTML = "";
+
+  limparOpcoes();
+
+  mensagem.value = "";
+
+  mensagem.placeholder = "Digite seu nome...";
+
+
+  adicionarMensagem(
+    "Olá! 👋 Seja bem-vindo à GP Digital."
+  );
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      "Eu sou o assistente virtual da GP Digital e vou ajudar você a encontrar a solução ideal para o seu negócio."
+    );
+
+  }, 700);
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      "Antes de começarmos, qual é o seu nome?"
+    );
+
+    mensagem.focus();
+
+  }, 1400);
+
+}
+
+
+/* =========================================
+   FORMULÁRIO
+========================================= */
+
+formulario.addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const texto = mensagem.value.trim();
+
+  if (!texto) return;
+
+
+  adicionarMensagem(texto, "cliente");
+
+  mensagem.value = "";
+
+
+  /* NOME */
+
+  if (!cliente.nome) {
+
+    cliente.nome = texto;
+
+    mensagem.placeholder = "Digite sua resposta...";
+
+    esperar(() => {
+
+      adicionarMensagem(
+        `Prazer em conhecer você, ${cliente.nome}! 😄`
+      );
+
+    });
+
+
+    esperar(() => {
+
+      adicionarMensagem(
+        "Agora me diga o que você está procurando:"
+      );
+
+      mostrarServicos();
+
+    }, 1100);
+
+
+    return;
+
+  }
+
+
+  /* IDEIA */
+
+  cliente.ideia = texto;
+
+  mensagem.placeholder = "Digite sua resposta...";
+
+  limparOpcoes();
+
+  mostrarFinal();
+
+});
+
+
+/* =========================================
+   SERVIÇOS
+========================================= */
+
+function mostrarServicos() {
+
+  limparOpcoes();
+
+
+  criarBotao(
+    "🎨 Artes para Instagram e WhatsApp",
+    () => selecionarServico("Artes para Instagram e WhatsApp"),
+    "A partir de R$10"
+  );
+
+
+  criarBotao(
+    "🎬 Edição de vídeos",
+    () => selecionarServico("Edição de vídeos"),
+    "A partir de R$20"
+  );
+
+
+  criarBotao(
+    "🎉 Convites digitais",
+    () => selecionarServico("Convites digitais"),
+    "A partir de R$6"
+  );
+
+
+  criarBotao(
+    "🌐 Site / Página de divulgação",
+    () => selecionarServico("Site / Página de divulgação"),
+    "A partir de R$50"
+  );
+
+
+  criarBotao(
+    "🤖 Bot atendente",
+    () => selecionarServico("Bot atendente"),
+    "R$35 a R$135"
+  );
+
+
+  criarBotao(
+    "📢 Divulgação / Comissão",
+    () => selecionarServico("Divulgação / Comissão"),
+    "Valor combinado"
+  );
+
+
+  criarBotao(
+    "💡 Outro serviço",
+    () => selecionarServico("Outro serviço"),
+    "Vamos conversar"
+  );
+
+}
+
+
+/* =========================================
+   SELECIONAR SERVIÇO
+========================================= */
+
+function selecionarServico(servico) {
+
+  cliente.servico = servico;
+
+  adicionarMensagem(servico, "cliente");
+
+  limparOpcoes();
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      "Ótima escolha! 👍"
+    );
+
+  });
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      "Você já tem alguma ideia do que deseja ou gostaria que a GP Digital sugerisse uma solução?"
+    );
+
+    mostrarIdeias();
+
+  }, 900);
+
+}
+
+
+/* =========================================
+   IDEIA
+========================================= */
+
+function mostrarIdeias() {
+
+  limparOpcoes();
+
+
+  criarBotao(
+    "💡 Já tenho uma ideia",
+    () => pedirIdeia()
+  );
+
+
+  criarBotao(
+    "✨ Ainda não tenho uma ideia",
+    () => {
+
+      cliente.ideia = "Ainda não tenho uma ideia.";
+
+      adicionarMensagem(
+        "Ainda não tenho uma ideia.",
+        "cliente"
+      );
+
+      mostrarFinal();
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   PEDIR IDEIA
+========================================= */
+
+function pedirIdeia() {
+
+  adicionarMensagem(
+    "Já tenho uma ideia.",
+    "cliente"
+  );
+
+  limparOpcoes();
+
+  mensagem.placeholder = "Conte sua ideia...";
+
+  mensagem.focus();
+
+}
+
+
+/* =========================================
+   FINAL
+========================================= */
+
+function mostrarFinal() {
+
+  limparOpcoes();
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      `Perfeito, ${cliente.nome}! 🚀`
+    );
+
+  });
+
+
+  esperar(() => {
+
+    adicionarMensagem(
+      `Aqui está o resumo do seu atendimento:\n\n` +
+      `👤 Nome: ${cliente.nome}\n` +
+      `🛠 Serviço: ${cliente.servico}\n` +
+      `💡 Ideia: ${cliente.ideia}\n\n` +
+      `Agora você pode falar diretamente com a GP Digital para receber seu orçamento.`
+    );
+
+  }, 900);
+
+
+  esperar(() => {
+
+    criarWhatsApp();
+
+  }, 1600);
+
+}
+
+
+/* =========================================
+   WHATSAPP
+========================================= */
+
+function criarWhatsApp() {
+
+  limparOpcoes();
+
+
+  const botao = document.createElement("a");
+
+  botao.className = "whatsapp";
+
+  botao.textContent =
+    "💬 Falar com a GP Digital no WhatsApp";
+
+
+  if (WHATSAPP === "SEU_NUMERO_AQUI") {
+
+    botao.href = "#";
+
+    botao.onclick = function(event) {
+
+      event.preventDefault();
+
+      alert(
+        "Configure primeiro o número do WhatsApp no arquivo script.js."
+      );
+
+    };
+
+  } else {
+
+    const texto =
+      `Olá, GP Digital! Quero fazer um orçamento.%0A%0A` +
+
+      `👤 Nome: ${encodeURIComponent(cliente.nome)}%0A` +
+
+      `🛠 Serviço: ${encodeURIComponent(cliente.servico)}%0A` +
+
+      `💡 Ideia: ${encodeURIComponent(cliente.ideia)}`;
+
+
+    botao.href =
+      `https://wa.me/${WHATSAPP}?text=${texto}`;
+
+    botao.target = "_blank";
+
+  }
+
+
+  opcoes.appendChild(botao);
+
+
+  const reiniciar = document.createElement("button");
+
+  reiniciar.className = "opcao";
+
+  reiniciar.textContent =
+    "🔄 Fazer novo atendimento";
+
+  reiniciar.onclick = iniciar;
+
+  opcoes.appendChild(reiniciar);
+
+}
+
+
+/* =========================================
+   INICIAR BOT
+========================================= */
+
+iniciar();
